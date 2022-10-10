@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Please enter the details below.</h3>
+        </div>
+        <div class="panel-body">
+            <div>
+                <label>Student Name</label>
+                <input type="text" name="Name" id="Name" class="form-control" placeholder="Enter Student Name" required="" />
+            </div>
+            <div>
+                <label>Last Name</label>
+                <input type="text" name="Fname" id="Fname" class="form-control" placeholder="Enter Father Name" required="" />
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="text" name="Email" id="Email" class="form-control" placeholder="Enter Email" required="" />
+            </div>
+            <div>
+                <label>Mobile</label>
+                <input type="text" name="Mobile" id="Mobile" class="form-control" placeholder="Enter Mobile Number" required="" />
+            </div>
+            <div>
+                <label>Description</label>
+                <input type="text" name="Description" id="Description" class="form-control" placeholder="Enter Description" required="" />
+            </div>
+
+            <div>
+                <div style="float: right; display:inline-block;">
+                    <input class="btn btn-primary" name="submitButton" id="btnSave" value="Save" type="button">
+                </div>
+            </div>
+        </div>
+    </div><hr />
+    <table id="tblStudent" class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
+            <tr>
+                <th align="left" class="productth">ID</th>
+                <th align="left" class="productth">Student Name</th>
+                <th align="left" class="productth">Father Name</th>
+                <th align="left" class="productth">Email</th>
+                <th align="left" class="productth">Mobile Number</th>
+                <th align="left" class="productth">Description</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+    $(function () {
+        LoadData();
+        $("#btnSave").click(function () {
+            //alert("");
+            var std = {};
+            std.Name = $("#Name").val();
+            std.Fname = $("#Fname").val();
+            std.Email = $("#Email").val();
+            std.Mobile = $("#Mobile").val();
+            std.Description = $("#Description").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("createStudent", "Student")',
+                data: '{std: ' + JSON.stringify(std) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                   // alert("Data has been added successfully.");
+                    LoadData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+
+    function LoadData() {
+        $("#tblStudent tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getStudent", "Student")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                        + "<td class='prtoducttd'>" + item.ID + "</td>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+                        + "<td class='prtoducttd'>" + item.Fname + "</td>"
+                        + "<td class='prtoducttd'>" + item.Email + "</td>"
+                        + "<td class='prtoducttd'>" + item.Mobile + "</td>"
+                        + "<td class='prtoducttd'>" + item.Description + "</td>"
+                    + "</tr>";
+                    $('#tblStudent tbody').append(rows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+        return false;
+    }
+    </script>
+}  
