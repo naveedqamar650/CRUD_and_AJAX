@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/Student.js"></script>
+
+<h1><b>AngularJs CRUD Application</b></h1>
+
+<div ng-app="myApp">
+    <div ng-controller="myCntrl as vm">
+        <div class="form-horizontal" role="form">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Name</label>
+                            <input type="text" class="form-control" ng-model="vm.student.Name" id="Name"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Father Name</label>
+                            <input type="text" class="form-control" ng-model="vm.student.Fname" id="Fname"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Email</label>
+                            <input type="text" class="form-control" ng-model="vm.student.Email" id="Email"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Mobile Number</label>
+                            <input type="text" class="form-control" ng-model="vm.student.Mobile" id="Mobile"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Description</label>
+                            <input type="text" class="form-control" ng-model="vm.student.Description" id="Description"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary" id="Inserted" ng-click="vm.addStudent()" value="{{vm.btntext}}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-init="vm.GetRecord()">
+            <table cellpadding="10" class="table table-bordered table-hover">
+                <tr>
+                    <th>Sr#</th>
+                    <th>Name</th>
+                    <th>Father Name</th>
+                    <th>Email</th>
+                    <th>Mobile Number</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="Std in vm.RegisteredData">
+                    <td>{{Std.ID}}</td>
+                    <td>{{Std.Name}}</td>
+                    <td>{{Std.Fname}}</td>
+                    <td>{{Std.Email}}</td>
+                    <td>{{Std.Mobile}}</td>
+                    <td>{{Std.Description}}</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" ng-click="vm.UpdateDetails(Std)"><i class="glyphicon glyphicon-pencil"></i></a> 
+                        <a class="btn btn-danger btn-sm" ng-click="vm.DeleteDetails(Std.ID)"><i class="glyphicon glyphicon-trash"></i></a> 
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
